@@ -15,7 +15,8 @@ pip install -r requirements.txt
 
 ## Config file
 
-This configuration can be used to evaluate the simclr based training of a ResNet model. The trained model can then be used to perform a linear evaluation, fine tuning and be exported to onnx. 
+This configuration can be used to evaluate the simclr based training of a ResNet model. The trained model can then be 
+used to perform a linear evaluation, fine tuning and be converted to onnx. 
 
 ```yaml
 simclr:
@@ -76,4 +77,11 @@ python python train_logistic_regression.py PATH_TO_CONFIG_FILE output/PATH_TO_GE
 
 ```
 python python train_classification.py PATH_TO_CONFIG_FILE output/PATH_TO_GENERATED_TRAINING_OUTPUT EPOCH_NUM
+```
+
+## Convert to ONNX
+
+```
+python convert_to_onnx.py PATH_TO_CONFIG_FILE output/PATH_TO_GENERATED_TRAINING_OUTPUT EPOCH_NUM
+
 ```
