@@ -21,6 +21,8 @@ class GaussianBlur(object):
         image = np.array(sample)
 
         kernel_size = int(min(sample.size) * self.kernel_size)
+        if kernel_size % 2 == 0:
+            kernel_size += 1
         # print('kernel_size: {}'.format(kernel_size))
 
         rnd_sigma = np.random.random_sample()
