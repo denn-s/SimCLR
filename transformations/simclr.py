@@ -31,7 +31,7 @@ class TransformsSimCLR:
                 torchvision.transforms.RandomHorizontalFlip(),
                 torchvision.transforms.RandomApply([color_jitter], p=color_jitter_prob),
                 torchvision.transforms.RandomGrayscale(p=gray_scale_prob),
-                # TODO: atm this has to be the last transform prior to ToTensor().
+                # TODO: atm this has to be the last transform prior to ToTensor(). find a better approach?
                 torchvision.transforms.RandomApply([gaussian_blur], p=gaussian_blur_prob),
                 torchvision.transforms.ToTensor(),
             ]
@@ -42,17 +42,14 @@ class TransformsSimCLR:
             [
                 torchvision.transforms.RandomResizedCrop(size=size),
                 torchvision.transforms.RandomHorizontalFlip(),
-                # torchvision.transforms.CenterCrop(size=size),
                 torchvision.transforms.ToTensor()
             ]
         )
 
-        # do not apply the transformations in the test case. only perform a center crop
+        # do not apply the transformations in the test case. only perform a resize
         self.test_transform = torchvision.transforms.Compose(
             [
-                #torchvision.transforms.RandomResizedCrop(size=size),
-                #torchvision.transforms.RandomHorizontalFlip(),
-                torchvision.transforms.CenterCrop(size=size),
+                torchvision.transforms.Resize(size=size),
                 torchvision.transforms.ToTensor()
             ]
         )

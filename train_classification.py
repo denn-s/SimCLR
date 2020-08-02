@@ -140,7 +140,7 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, dataset_siz
 def main(args):
     config_yaml = yaml.load(open(args.config, "r"), Loader=yaml.FullLoader)
     if not os.path.exists(args.config):
-        raise FileNotFoundError('provided config file does not exist: %s' % args.config)
+        raise FileNotFoundError('provided config file does not exist: {}'.format(args.config))
 
     config_yaml['logger_name'] = 'classification'
     config = SimCLRConfig(config_yaml)
@@ -152,7 +152,7 @@ def main(args):
         os.makedirs(config.base.log_dir_path)
 
     logger = setup_logger(config.base.logger_name, config.base.log_file_path)
-    logger.info('using config: %s' % config)
+    logger.info('using config: {}'.format(config))
 
     config_copy_file_path = os.path.join(config.base.log_dir_path, 'config.yaml')
     shutil.copy(args.config, config_copy_file_path)
@@ -162,7 +162,7 @@ def main(args):
     if not os.path.exists(args.model):
         raise FileNotFoundError('provided model directory does not exist: %s' % args.model)
     else:
-        logger.info('using model directory: %s' % args.model)
+        logger.info('using model directory: {}'.format(args.model))
 
     config.fine_tuning.model_path = args.model
     logger.info('using model_path: {}'.format(config.fine_tuning.model_path))
@@ -173,9 +173,9 @@ def main(args):
     model_file_path = Path(config.fine_tuning.model_path).joinpath(
         'checkpoint_' + config.fine_tuning.epoch_num + '.pth')
     if not os.path.exists(model_file_path):
-        raise FileNotFoundError('model file does not exist: %s' % model_file_path)
+        raise FileNotFoundError('model file does not exist: {}'.format(model_file_path))
     else:
-        logger.info('using model file: %s' % model_file_path)
+        logger.info('using model file: {}'.format(model_file_path))
 
     train_dataset, val_dataset, test_dataset, classes = Datasets.get_datasets(config)
     num_classes = len(classes)
@@ -187,8 +187,10 @@ def main(args):
         'val': val_loader
     }
 
-    dataset_sizes = {'train': len(train_dataset),
-                     'val': len(val_dataset)}
+    dataset_sizes = {
+        'train': len(train_loader),
+        'val': len(val_loader)
+    }
 
     simclr_model = load_model(config)
     logger.info('loaded simclr_model: {}'.format(config.fine_tuning.model_path))

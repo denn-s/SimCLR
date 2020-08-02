@@ -37,6 +37,8 @@ def save_model(config, model):
 def train(config, train_loader, model, criterion, optimizer, writer):
     logger = logging.getLogger('main')
 
+    log_every_n_steps = 100
+
     loss_epoch = 0
     for step, ((x_i, x_j), _) in enumerate(train_loader):
 
@@ -53,7 +55,7 @@ def train(config, train_loader, model, criterion, optimizer, writer):
 
         optimizer.step()
 
-        if step % 100 == 0:
+        if step % log_every_n_steps == 0:
             logger.info("step [%5.i|%5.i] -> loss: %.15f" % (step + 1, len(train_loader), loss.item()))
 
         writer.add_scalar("Loss/train", loss.item(), config.simclr.train.global_step)
@@ -65,7 +67,7 @@ def train(config, train_loader, model, criterion, optimizer, writer):
 def main(args):
     config_yaml = yaml.load(open(args.config, "r"), Loader=yaml.FullLoader)
     if not os.path.exists(args.config):
-        raise FileNotFoundError('provided config file does not exist: %s' % args.config)
+        raise FileNotFoundError('provided config file does not exist: {}'.format(args.config))
 
     config_yaml['logger_name'] = 'simclr'
     config = SimCLRConfig(config_yaml)
@@ -77,7 +79,7 @@ def main(args):
         os.makedirs(config.base.log_dir_path)
 
     logger = setup_logger(config.base.logger_name, config.base.log_file_path)
-    logger.info('using config: %s' % config)
+    logger.info('using config: {}'.format(config))
 
     config_copy_file_path = os.path.join(config.base.log_dir_path, 'config.yaml')
     shutil.copy(args.config, config_copy_file_path)

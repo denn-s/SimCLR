@@ -1,6 +1,6 @@
 # SimCLR
 
-Unofficial pytorch implementation of _SimCLR: A Simple Framework for Contrastive Learning of Visual Representations_ by Ting Chen et al.
+Unofficial PyTorch implementation of _SimCLR: A Simple Framework for Contrastive Learning of Visual Representations_ by Ting Chen et al.
 
 [Link to paper](https://arxiv.org/pdf/2002.05709.pdf)
 

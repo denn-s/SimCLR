@@ -24,6 +24,7 @@ class SimCLRConfig:
         num_workers: int
 
         # start training with this epoch. most likely: 0
+        # TODO: implement capability to continue an interrupted training process
         start_epoch: int
 
         # end training with this epoch. examples: 10, 100,...
@@ -32,10 +33,8 @@ class SimCLRConfig:
         # directory where the datasets are located. example: "/home/USER_NAME/Data"
         data_dir_path: str
 
-        # dataset name. options: ["CIFAR10", "STL10", "iNaturalist2019"]
+        # dataset name. options: ["CIFAR10", "STL10", "iNaturalist2019", "ImageNet"]
         dataset: str
-
-        pretrain: bool
 
         # save trained model every n epochs. examples: 1,5,10,...
         save_num_epochs: int
@@ -44,11 +43,11 @@ class SimCLRConfig:
         img_size: int
 
         # name of the optimizer. options: ["Adam", "LARS"]
+        # TODO: implement LARS ptimizer
         optimizer: str
 
         weight_decay: float
 
-        # appendix B.7: optimal temperature under different batch sizes
         temperature: float
 
         global_step: int

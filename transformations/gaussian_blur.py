@@ -9,7 +9,6 @@ class GaussianBlur(object):
     """
 
     def __init__(self, kernel_size=0.1, min_sigma=0.1, max_sigma=2.0):
-
         # sigma set to random value in [0.1, 2.0] as stated in the paper
         self.min_sigma = min_sigma
         self.max_sigma = max_sigma

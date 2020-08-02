@@ -183,7 +183,8 @@ def main(args):
     else:
         logger.info('using model file: %s' % model_file_path)
 
-    train_dataset, val_dataset, test_dataset, classes = Datasets.get_datasets(config)
+    train_dataset, val_dataset, test_dataset, classes = Datasets.get_datasets(config,
+                                                                              img_size=config.logistic_regression.img_size)
     num_classes = len(classes)
 
     train_loader, val_loader, test_loader = Datasets.get_loaders(config, train_dataset, val_dataset, test_dataset)
