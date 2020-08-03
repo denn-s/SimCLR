@@ -188,8 +188,8 @@ def main(args):
     }
 
     dataset_sizes = {
-        'train': len(train_loader),
-        'val': len(val_loader)
+        'train': len(train_loader.sampler),
+        'val': len(val_loader.sampler)
     }
 
     simclr_model = load_model(config)
