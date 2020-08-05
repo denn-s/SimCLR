@@ -48,8 +48,9 @@ def save_model(config, model):
 
 
 def train(config, train_loader, model, criterion, optimizer, writer):
-    logger = logging.getLogger('main')
+    logger = logging.getLogger(config.base.logger_name)
 
+    # TODO: this should be a config attribute
     log_every_n_steps = 100
 
     loss_epoch = 0
