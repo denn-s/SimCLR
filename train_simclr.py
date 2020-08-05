@@ -21,8 +21,23 @@ def setup_parser():
 
 
 def load_model(config):
+    # model = SimCLR(config)
+    # model = model.to(config.base.device)
+
     model = SimCLR(config)
+
+    if not config.simclr.train.start_epoch == 0:
+
+        model_file_path = os.path.join(config.base.log_dir_path,
+                                       "checkpoint_{}.pth".format(config.simclr.train.start_epoch))
+
+        if not os.path.exists(model_file_path):
+            raise FileNotFoundError('provided checkpoint does not exist: {}'.format(model_file_path))
+
+        model.load_state_dict(torch.load(model_file_path, map_location=config.base.device.type))
+
     model = model.to(config.base.device)
+
     return model
 
 
