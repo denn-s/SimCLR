@@ -26,6 +26,7 @@ class SimCLRConfig:
         # start training with this epoch. most likely: 0
         # TODO: implement capability to continue an interrupted training process
         start_epoch: int
+        restart_log_dir_path: str
 
         # end training with this epoch. examples: 10, 100,...
         epochs: int

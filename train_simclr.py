@@ -21,14 +21,12 @@ def setup_parser():
 
 
 def load_model(config):
-    # model = SimCLR(config)
-    # model = model.to(config.base.device)
 
     model = SimCLR(config)
 
     if not config.simclr.train.start_epoch == 0:
 
-        model_file_path = os.path.join(config.base.log_dir_path,
+        model_file_path = os.path.join(config.simclr.train.restart_log_dir_path,
                                        "checkpoint_{}.pth".format(config.simclr.train.start_epoch))
 
         if not os.path.exists(model_file_path):
@@ -84,8 +82,14 @@ def main(args):
     if not os.path.exists(args.config):
         raise FileNotFoundError('provided config file does not exist: {}'.format(args.config))
 
+    if 'restart_log_dir_path' not in config_yaml['simclr']['train'].keys():
+        config_yaml['simclr']['train']['restart_log_dir_path'] = None
+
     config_yaml['logger_name'] = 'simclr'
     config = SimCLRConfig(config_yaml)
+
+    if not config.simclr.train.start_epoch == 0 and config.simclr.train.restart_log_dir_path is None:
+        raise ValueError('provided config file is invalid. no restart_log_dir_path provided and start_epoch is not 0')
 
     if not os.path.exists(config.base.output_dir_path):
         os.mkdir(config.base.output_dir_path)
