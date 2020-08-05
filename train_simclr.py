@@ -105,14 +105,14 @@ def main(args):
 
     writer = SummaryWriter(log_dir=config.base.log_dir_path)
 
+    model = load_model(config)
+    logger.info('loaded model')
+
     train_dataset, _ = Datasets.get_simclr_dataset(config)
     logger.info('using train_dataset. length: {}'.format(len(train_dataset)))
 
     train_loader = Datasets.get_simclr_loader(config, train_dataset)
     logger.info('created train_loader. length {}'.format(len(train_loader)))
-
-    model = load_model(config)
-    logger.info('loaded model')
 
     scheduler = None
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-4)
@@ -121,6 +121,7 @@ def main(args):
     criterion = NTXent(config.simclr.train.batch_size, config.simclr.train.temperature, config.base.device)
     logger.info('created criterion')
 
+    config.simclr.train.current_epoch = config.simclr.train.start_epoch
     for epoch in range(config.simclr.train.start_epoch, config.simclr.train.epochs):
         lr = optimizer.param_groups[0]['lr']
         loss_epoch = train(config, train_loader, model, criterion, optimizer, writer)
