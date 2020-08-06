@@ -85,3 +85,11 @@ python python train_classification.py PATH_TO_CONFIG_FILE output/PATH_TO_GENERAT
 python convert_to_onnx.py PATH_TO_CONFIG_FILE output/PATH_TO_GENERATED_TRAINING_OUTPUT EPOCH_NUM
 
 ```
+
+# Results
+
+_Evaluated accuracy for the test set. Evaluation performed after training the model using simclr._
+
+| Evaluation method | Architecture | Batch size | Epochs | CIFAR10 | STL10 |
+| ----------------- | ------------ | -----------| ------ | ------- | ----- |
+| Linear evaluation | ResNet50     | 64         | 100    | 0.792   | 0.605 |
