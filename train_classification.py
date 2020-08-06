@@ -137,10 +137,46 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, dataset_siz
     return model
 
 
+def test_model(config, model, test_loader):
+    logger = logging.getLogger(config.base.logger_name)
+
+    model = model.to(config.base.device)
+    model.eval()
+
+    running_corrects = 0
+
+    num_test_images = len(test_loader.sampler)
+
+    log_every_n_steps = 100
+
+    for step, (batch, results) in enumerate(test_loader):
+
+        inputs = batch.to(config.base.device)
+        labels = results.to(config.base.device)
+
+        outputs = model(inputs)
+        _, preds = torch.max(outputs, 1)
+
+        step_corrects = torch.sum(preds == labels.data)
+        running_corrects += step_corrects
+
+        if step % log_every_n_steps == 0:
+            logger.info("step [%5.i|%5.i] -> step_corrects: %i, running_corrects: %i" % (
+                step + 1, len(test_loader), step_corrects, running_corrects))
+
+    test_acc = running_corrects.double() / num_test_images
+    logger.info('test accuracy: {}'.format(test_acc))
+
+    return test_acc
+
+
 def main(args):
     config_yaml = yaml.load(open(args.config, "r"), Loader=yaml.FullLoader)
     if not os.path.exists(args.config):
         raise FileNotFoundError('provided config file does not exist: {}'.format(args.config))
+
+    if 'restart_log_dir_path' not in config_yaml['simclr']['train'].keys():
+        config_yaml['simclr']['train']['restart_log_dir_path'] = None
 
     config_yaml['logger_name'] = 'classification'
     config = SimCLRConfig(config_yaml)
@@ -184,7 +220,7 @@ def main(args):
 
     dataloaders = {
         'train': train_loader,
-        'val': val_loader
+        'val': val_loader,
     }
 
     dataset_sizes = {
@@ -219,6 +255,9 @@ def main(args):
                                        epochs,
                                        writer)
     logger.info('completed model training')
+
+    test_model(config, classification_model, test_loader)
+    logger.info('completed model testing')
 
     trained_model_file_path = save_model(config, classification_model, epochs)
     logger.info('saved trained model: {}'.format(trained_model_file_path))

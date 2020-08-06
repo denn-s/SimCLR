@@ -24,8 +24,9 @@ class SimCLRConfig:
         num_workers: int
 
         # start training with this epoch. most likely: 0
-        # TODO: implement capability to continue an interrupted training process
         start_epoch: int
+
+        # in case of restart this is where the saved model is expected to be located
         restart_log_dir_path: str
 
         # end training with this epoch. examples: 10, 100,...

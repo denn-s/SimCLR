@@ -144,6 +144,9 @@ def main(args):
     if not os.path.exists(args.config):
         raise FileNotFoundError('provided config file does not exist: %s' % args.config)
 
+    if 'restart_log_dir_path' not in config_yaml['simclr']['train'].keys():
+        config_yaml['simclr']['train']['restart_log_dir_path'] = None
+
     if args.data_dir_path is not None:
         config_yaml['simclr']['train']['data_dir_path'] = args.data_dir_path
         print('yo!: ', args.data_dir_path)
