@@ -86,6 +86,7 @@ class SimCLRConfig:
         learning_rate: float
         momentum: float
         img_size: int
+        save_num_epochs: int
 
         # decay "learning_rate" by a factor of "gamma" every "step_size" epochs
         gamma: float

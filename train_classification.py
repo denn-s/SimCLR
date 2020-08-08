@@ -72,6 +72,7 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, dataset_siz
 
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
+    best_epoch = 0
 
     log_every_n_steps = 100
 
@@ -117,6 +118,9 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, dataset_siz
             epoch_loss = running_loss / dataset_sizes[phase]
             epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
+            if epoch % config.fine_tuning.save_num_epochs == 0:
+                save_model(config, model, epoch)
+
             writer.add_scalar("Loss/{}_epoch".format(phase), epoch_loss, epoch)
             writer.add_scalar("Accuracy/{}_epoch".format(phase), epoch_acc, epoch)
 
@@ -124,13 +128,14 @@ def train_model(model, criterion, optimizer, scheduler, dataloaders, dataset_siz
                 epoch + 1, num_epochs, phase, epoch_loss, epoch_acc))
 
             if phase == 'val' and epoch_acc > best_acc:
+                best_epoch = epoch
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
 
     time_elapsed = time.time() - since
     logger.info('training complete in {:.0f}m {:.0f}s'.format(
         time_elapsed // 60, time_elapsed % 60))
-    logger.info('best validation accuracy: {:10}'.format(best_acc))
+    logger.info('best validation accuracy: {:10}, epoch: {}'.format(best_acc, best_epoch))
 
     # load best model weights
     model.load_state_dict(best_model_wts)
