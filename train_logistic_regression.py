@@ -3,6 +3,7 @@ import logging
 import argparse
 from pathlib import Path
 import shutil
+import copy
 
 import yaml
 import numpy as np
@@ -213,6 +214,11 @@ def main(args):
         config, train_x, train_y, test_x, test_y
     )
 
+    best_model_wts = copy.deepcopy(model.state_dict())
+    best_acc = 0.0
+    best_epoch = 0
+    best_loss = 0
+
     for epoch in range(config.logistic_regression.epochs):
         loss_epoch, accuracy_epoch = train(
             config, feature_train_loader, model, criterion, optimizer
@@ -220,12 +226,24 @@ def main(args):
 
         loss = loss_epoch / len(train_loader)
         accuracy = accuracy_epoch / len(train_loader)
+
         writer.add_scalar("Loss/train_epoch", loss, epoch)
         writer.add_scalar("Accuracy/train_epoch", accuracy, epoch)
         logger.info(
             "epoch [%3.i|%i] -> train loss: %f, accuracy: %f" % (
                 epoch + 1, config.logistic_regression.epochs, loss, accuracy)
         )
+
+        if accuracy > best_acc:
+            best_loss = loss
+            best_epoch = epoch + 1
+            best_acc = accuracy
+            best_model_wts = copy.deepcopy(model.state_dict())
+
+    model.load_state_dict(best_model_wts)
+    logger.info(
+        "train dataset performance -> best epoch: {}, loss: {}, accuracy: {}".format(best_epoch, best_loss, best_acc, )
+    )
 
     loss_epoch, accuracy_epoch = test(
         config, feature_test_loader, model, criterion
@@ -234,7 +252,7 @@ def main(args):
     loss = loss_epoch / len(test_loader)
     accuracy = accuracy_epoch / len(test_loader)
     logger.info(
-        "test dataset performance -> loss: %f, accuracy: %f" % (loss, accuracy)
+        "test dataset performance -> best epoch: {}, loss: {}, accuracy: {}".format(best_epoch, loss, accuracy)
     )
 
 
