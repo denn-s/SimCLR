@@ -202,7 +202,7 @@ class Datasets:
 
             val_loader = torch.utils.data.DataLoader(
                 val_dataset,
-                batch_size=config.onnx.batch_size,
+                batch_size=config.simclr.train.batch_size,
                 shuffle=False,
                 drop_last=True,
                 num_workers=config.simclr.train.num_workers,
@@ -210,7 +210,7 @@ class Datasets:
 
         test_loader = torch.utils.data.DataLoader(
             test_dataset,
-            batch_size=config.logistic_regression.batch_size,
+            batch_size=config.simclr.train.batch_size,
             shuffle=False,
             drop_last=True,
             num_workers=config.simclr.train.num_workers,
