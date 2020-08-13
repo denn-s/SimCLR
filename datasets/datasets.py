@@ -46,9 +46,9 @@ class Datasets:
         elif config.simclr.train.dataset == 'iNaturalist2019':
 
             data_dir_path = Path(config.simclr.train.data_dir_path)
-            dataset_dir_path = data_dir_path.joinpath('inaturalist-2019-fgvc6')
+            dataset_dir_path = data_dir_path.joinpath('iNaturalist2019')
 
-            train_json_file_path = dataset_dir_path.joinpath('train2019_0.2.json')
+            train_json_file_path = dataset_dir_path.joinpath('train2019_1.0.json')
             train_dataset = INaturalist2019Dataset(train_json_file_path, dataset_dir_path,
                                                    transform=TransformsSimCLR(size=config.simclr.train.img_size))
 
@@ -133,16 +133,16 @@ class Datasets:
         elif config.simclr.train.dataset == 'iNaturalist2019':
 
             data_dir_path = Path(config.simclr.train.data_dir_path)
-            dataset_dir_path = data_dir_path.joinpath('inaturalist-2019-fgvc6')
+            dataset_dir_path = data_dir_path.joinpath('iNaturalist2019')
 
-            train_json_file_path = dataset_dir_path.joinpath('train2019_0.2.json')
+            train_json_file_path = dataset_dir_path.joinpath('train2019_1.0.json')
             train_dataset = INaturalist2019Dataset(train_json_file_path, dataset_dir_path,
                                                    transform=TransformsSimCLR(
                                                        size=img_size).train_test_transform)
 
             classes = train_dataset.classes
 
-            val_json_file_path = dataset_dir_path.joinpath('val2019_0.2.json')
+            val_json_file_path = dataset_dir_path.joinpath('val2019_1.0.json')
             val_dataset = INaturalist2019Dataset(val_json_file_path, dataset_dir_path,
                                                  transform=TransformsSimCLR(
                                                      size=img_size).test_transform)
