@@ -90,6 +90,9 @@ python convert_to_onnx.py PATH_TO_CONFIG_FILE output/PATH_TO_GENERATED_TRAINING_
 
 _Evaluated accuracy for the test set. Evaluation performed after training the model using simclr._
 
-| Evaluation method | Architecture | Batch size | Epochs | CIFAR10 | STL10 |
-| ----------------- | ------------ | -----------| ------ | ------- | ----- |
-| Linear evaluation | ResNet50     | 64         | 100    | 0.792   | 0.605 |
+| Dataset     | Architecture | Batch size | Epochs | Linear Evaluation | Fine Tuning |
+| ------------| ------------ | -----------| ------ | ----------------- |------------ |
+| CIFAR10     | ResNet50     | 512        | 1000   | 0.7957            | 0.7828      |
+| STL10       | ResNet50     | 256        | 1000   | 0.7152            | 0.7166      |
+| ImageNet    | ResNet50     | 64         | 70     |                   | 0.4710      |
+| iNaturalist | ResNet50     | 64         | 100    |                   |             |
