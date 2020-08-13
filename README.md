@@ -95,4 +95,4 @@ _Evaluated accuracy for the test set. Evaluation performed after training the mo
 | CIFAR10     | ResNet50     | 512        | 1000   | 0.7957            | 0.7828      |
 | STL10       | ResNet50     | 256        | 1000   | 0.7152            | 0.7166      |
 | ImageNet    | ResNet50     | 64         | 70     |                   | 0.4710      |
-| iNaturalist | ResNet50     | 64         | 100    |                   |             |
+| iNaturalist | ResNet50     | 64         | 100    |                   | 0.3310      |
